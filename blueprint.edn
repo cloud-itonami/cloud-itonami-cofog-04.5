@@ -1,0 +1,10 @@
+{:itonami.blueprint/id "cloud-itonami-cofog-04.5"
+ :itonami.blueprint/name "Independent Road & Bridge Inspection Robotics"
+ :itonami.blueprint/cofog "04.5"
+ :itonami.blueprint/domain :economic-affairs/transport-infrastructure
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:infrastructure-safety :public-spend-transparency :resilience]
+ :itonami.blueprint/governor :infrastructure-inspection-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :telemetry :forms :dmn :bpmn :audit-ledger]
+ :itonami.blueprint/status :public-oss}
