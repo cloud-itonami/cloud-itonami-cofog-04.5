@@ -7,4 +7,41 @@
  :itonami.blueprint/governor :infrastructure-inspection-governor
  :itonami.blueprint/robotics true
  :itonami.blueprint/required-technologies [:robotics :telemetry :forms :dmn :bpmn :audit-ledger]
- :itonami.blueprint/status :public-oss}
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "InspectionAdvisor ⊣ Infrastructure Inspection Governor, langgraph-clj
+ StateGraph, append-only audit ledger. A road/bridge-infrastructure-
+ inspection BACK-OFFICE COORDINATION actor for an independent
+ inspection contractor -- not direct inspection-robot-actuation
+ authority (beyond passive sensing) and not a structure-closure
+ authority. Four ops (`:log-inspection` / `:structural-scan` /
+ `:escalate-structural-concern` / `:schedule-reinspection`), all
+ `:effect :propose` only. Thirteen concrete governor checks:
+ propose-only effect, closed op allowlist, closed proposal-effect
+ allowlist (no direct hardware/closure control), permanent
+ equipment-actuate block, permanent closure-authority side-channel
+ block (this actor never self-reports a structure closure outside the
+ gated structural-concern-escalation path), independent structure
+ verification/registration before any scan or reinspection schedule,
+ independent recompute of the acceptable/deficient finding from the
+ raw condition-rating sensor reading against the structure's own
+ registered maintenance-trigger threshold (never trusting a proposal's
+ own self-reported finding), condition-rating plausibility validation
+ (scale-aware: 0-9 or 0-100), rating-scale validation, independent
+ on-file-deficient-finding gate before any reinspection may be
+ scheduled (or billed), double-schedule guard, and survey-type
+ validation. A thirteenth, EXTRA check unique to this actor:
+ independent recompute of a `:critical?` triage flag grounded in the
+ real external scale's own fixed, non-local-discretion boundary --
+ FHWA/AASHTO NBIS (23 CFR 650 Subpart C) / Manual for Bridge Evaluation
+ condition rating <= 1 ('Imminent Failure', closed to traffic) on the
+ 0-9 bridge-component scale, or ASTM D6433 Pavement Condition Index
+ <= 10 ('Failed', demands immediate reconstruction) on the 0-100
+ pavement scale -- cited only for these two verified numeric anchors,
+ never for a fabricated maintenance-trigger threshold (that stays the
+ operator's own registered value). Structural-concern escalation (a
+ defect requiring immediate closure, the exact scenario this README
+ names) ALWAYS escalates to a human public-works authority;
+ `:log-inspection` is the only op eligible to auto-commit, and only at
+ phase 3 when governor-clean."}
