@@ -108,8 +108,8 @@ Portable `.cljc` namespaces under `src/infrainsp/`:
 - `operation` — the langgraph-clj StateGraph (1 run = 1 coordination
   request); `sim` drives the offline demo.
 
-`clojure -M:dev:test` (93 tests, 243 assertions) and `clojure -M:lint`
-(clj-kondo, 0 errors). `clojure -M:dev:run` drives the demo end to end,
+`kbb -M:dev:test` (93 tests, 243 assertions) and `kbb -M:lint`
+(clj-kondo, 0 errors). `kbb -M:dev:run` drives the demo end to end,
 including every HARD-hold scenario and a real Imminent-Failure/Failed
 critical-reading scenario.
 

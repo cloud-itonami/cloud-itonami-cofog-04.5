@@ -1,5 +1,5 @@
 (ns infrainsp.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean contractor through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean contractor through
   intake -> structural scan (escalate/approve) -> structural-concern
   escalation (escalate/approve) -> reinspection scheduling
   (escalate/approve), then shows HARD-hold scenarios: a mis-wired
