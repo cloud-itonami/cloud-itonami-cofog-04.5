@@ -1,0 +1,32 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a road/bridge inspection robot (crack/pothole
+;; imaging, bridge deck and joint scanning) performs the on-site survey
+;; (COFOG 04.5 transport). Its physical work is driving a tall imaging mast
+;; along a bridge deck -- including emergency stops when a lane closure is
+;; breached -- and testing coupons taken from corroded reinforcement.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-cofog-04.5"
+ :cases
+ [{:id :deck-scan-emergency-stop
+   :kind :transport
+   :procedure "deck-scanning robot with a 1.2 m camera/GPR mast drives a 120 m bridge span inside a lane closure and must stop hard when traffic breaches the cones"
+   :params {:mass-kg 70.0 :payload-kg 18.0 :distance-m 120.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :drive-force-n 200.0 :crr 0.015 :cog-height-m 0.85 :support-half-length-m 0.30}
+   :sweep {:param :brake-decel-mps2 :values [0.5 1.0 1.5 2.0 2.5 3.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.3 :basis "estimate: keep 30 % of the static tip-over moment in reserve for deck cross-fall, expansion-joint bumps and wind on the mast"}
+   :boundary {:lo 0.5 :hi 4.0}}
+  {:id :corroded-rebar-coupon
+   :kind :material
+   :procedure "coupon cut from a corroded D19 deck reinforcing bar is pulled to a 90 kN proof load; section loss from corrosion is swept"
+   :params {:length-m 0.10 :youngs-modulus-pa 200.0e9 :yield-stress-pa 345.0e6 :hardening-pa 2.0e9
+            :density-kg-m3 7850.0 :max-force-n 90000.0}
+   :sweep {:param :area-m2 :values [2.865e-4 2.7e-4 2.55e-4 2.4e-4 2.25e-4]}
+   :quantity :final-strain
+   :limit {:max 0.001725 :basis "JIS G 3112 SD345: yield point >= 345 N/mm2; with E = 200 GPa the elastic-limit strain is 345/200000 = 0.001725"}
+   :boundary {:lo 2.0e-4 :hi 2.865e-4}}]}
